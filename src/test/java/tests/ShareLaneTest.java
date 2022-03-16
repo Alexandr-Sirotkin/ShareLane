@@ -17,6 +17,7 @@ public class ShareLaneTest {
   //3. Нажать кнопку продолжить
   //4. Нажать кнопку регистрация
   //5. Проверить сообщение
+  fefefefe
 
   public WebDriver driver;
 
