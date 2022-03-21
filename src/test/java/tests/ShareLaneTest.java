@@ -4,9 +4,11 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 
@@ -21,18 +23,39 @@ public class ShareLaneTest {
   public WebDriver driver;
 
 
+  @BeforeClass
+  public void setupBrowser() {
+    WebDriverManager.chromedriver().setup();
+    ChromeOptions chromeOptions = new ChromeOptions();
+    chromeOptions.setHeadless(true);
+    chromeOptions.addArguments("--incognito");
+    chromeOptions.addArguments("--disable-popup-blocking");
+    driver = new ChromeDriver(chromeOptions);
+    driver.manage().window().maximize();
+  }
+
+//  @Test
+//  public void verifyRegistrationPageTest() {
+////    System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
+//    driver.get("https://www.sharelane.com/cgi-bin/register.py");
+//    driver.findElement(By.xpath("//input[@name='zip_code']")).sendKeys("12345");
+//    driver.findElement(By.xpath("//input[@value='Continue']")).click();
+//    driver.findElement(By.xpath("//input[@value='Register']")).click();
+//    String text = driver.findElement(By.xpath("//span[@class='error_message']")).getText();
+//    Assert.assertEquals(text, "Oops, error on page. Some of your fields have invalid data or email was previously used");
+//  }
 
   @Test
-  public void verifyRegistrationPageTest() {
-//    System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
-    WebDriverManager.chromedriver().setup();
-    driver = new ChromeDriver();
-    driver.get("https://www.sharelane.com/cgi-bin/register.py");
-    driver.findElement(By.xpath("//input[@name='zip_code']")).sendKeys("12345");
-    driver.findElement(By.xpath("//input[@value='Continue']")).click();
-    driver.findElement(By.xpath("//input[@value='Register']")).click();
-    String text = driver.findElement(By.xpath("//span[@class='error_message']")).getText();
-    Assert.assertEquals(text, "Oops, error on page. Some of your fields have invalid data or email was previously used");
+  public void verifyRegistrationPageTest1() {
+    driver.get("https://healthunify.com/bmicalculator/");
+    driver.findElement(By.xpath("//input[@name='wg']")).sendKeys("70");
+    driver.findElement(By.xpath("//input[@name='ht']")).sendKeys("180");
+    driver.findElement(By.xpath("//input[@name='cc']")).click();
+    String text1 = driver.findElement(By.xpath("//input[@name='si']")).getAttribute("value");
+    String text2 = driver.findElement(By.xpath("//input[@name='desc']")).getAttribute("value");
+    System.out.println(text1);
+    System.out.println(text2);
+    Assert.assertEquals(text2, "Your category is Normal");
   }
 
   @AfterClass
