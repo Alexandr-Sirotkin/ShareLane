@@ -27,7 +27,7 @@ public class ShareLaneTest {
   public void setupBrowser() {
     WebDriverManager.chromedriver().setup();
     ChromeOptions chromeOptions = new ChromeOptions();
-    chromeOptions.setHeadless(true);
+    chromeOptions.setHeadless(false);
     chromeOptions.addArguments("--incognito");
     chromeOptions.addArguments("--disable-popup-blocking");
     driver = new ChromeDriver(chromeOptions);
@@ -57,6 +57,8 @@ public class ShareLaneTest {
     System.out.println(text2);
     Assert.assertEquals(text2, "Your category is Normal");
   }
+
+
 
   @AfterClass
   public void closeBrowser() {
