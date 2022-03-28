@@ -11,40 +11,34 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class HoversTest {
+public class HoversTest extends BaseTest {
 
   private static final String BASE_URL = "http://the-internet.herokuapp.com/hovers";
   private static final String NOT_FOUND = "Not Found";
-  private static String baseFigurePath = "//div[@class='figure'][%s]//%s";
-  private WebDriver driver;
+  private static String BASE_FIGURE_PATH = "//div[@class='figure'][%s]//%s";
+  private static int FIRST_INDEX = 0;
 
   @BeforeClass
-  public void setupBrowser() {
-    WebDriverManager.chromedriver().setup();
-    ChromeOptions chromeOptions = new ChromeOptions();
-    chromeOptions.setHeadless(false);
-    chromeOptions.addArguments("--incognito");
-    chromeOptions.addArguments("--disable-popup-blocking");
-    driver = new ChromeDriver(chromeOptions);
-    driver.manage().window().maximize();
+  public void setupBrowser1() {
+    System.out.println("111111111111111");
   }
 
-  @Test
+  @Test(priority = 0)
   public void confirmNameOfFirstUser() {
     driver.get(BASE_URL);
     Actions action = new Actions(driver);
-    action.moveToElement(driver.findElements(By.className("figure")).get(0)).perform();
+    action.moveToElement(driver.findElements(By.className("figure")).get(FIRST_INDEX)).perform();
     String user1NameText = driver.findElement(getUserNameTextLocator(1)).getText();
     Assert.assertEquals(user1NameText, "name: user1");
   }
 
-  @Test(dependsOnMethods = "confirmNameOfFirstUser")
+  @Test(dependsOnMethods = "confirmNameOfFirstUser", priority = 2)
   public void verifyClickOnLinkOfFirstUser() {
     driver.findElement(getUserLinkLocator(1)).click();
     Assert.assertEquals(getNotFoundText(), NOT_FOUND);
   }
 
-  @Test(dependsOnMethods = "verifyClickOnLinkOfFirstUser")
+  @Test(priority = 3)
   public void confirmNameOfSecondUser() {
     driver.get(BASE_URL);
     Actions action = new Actions(driver);
@@ -53,13 +47,13 @@ public class HoversTest {
     Assert.assertEquals(user1NameText, "name: user2");
   }
 
-  @Test(dependsOnMethods = "confirmNameOfSecondUser")
+  @Test(dependsOnMethods = "confirmNameOfSecondUser", priority = 4)
   public void verifyClickOnLinkOfSecondUser() {
     driver.findElement(getUserLinkLocator(2)).click();
     Assert.assertEquals(getNotFoundText(), NOT_FOUND);
   }
 
-  @Test(dependsOnMethods = "verifyClickOnLinkOfSecondUser")
+  @Test(priority = 5)
   public void confirmNameOfThirdUser() {
     driver.get(BASE_URL);
     Actions action = new Actions(driver);
@@ -68,26 +62,23 @@ public class HoversTest {
     Assert.assertEquals(user1NameText, "name: user3");
   }
 
-  @Test(dependsOnMethods = "confirmNameOfThirdUser")
+  @Test(dependsOnMethods = "confirmNameOfThirdUser", priority = 6)
   public void verifyClickOnLinkOfThirdUser() {
     driver.findElement(getUserLinkLocator(3)).click();
     Assert.assertEquals(getNotFoundText(), NOT_FOUND);
   }
 
   private By getUserNameTextLocator(int userNumber) {
-    return By.xpath(String.format(baseFigurePath, userNumber, "h5"));
+    return By.xpath(String.format(BASE_FIGURE_PATH, userNumber, "h5"));
   }
 
   private By getUserLinkLocator(int userNumber) {
-    return By.xpath(String.format(baseFigurePath, userNumber, "a"));
+    return By.xpath(String.format(BASE_FIGURE_PATH, userNumber, "a"));
   }
 
   private String getNotFoundText() {
     return driver.findElement(By.xpath("//body")).getAttribute("innerText");
   }
 
-  @AfterClass
-  public void closeBrowser() {
-    driver.quit();
-  }
+
 }

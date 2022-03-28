@@ -1,6 +1,7 @@
 package tests;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -32,6 +33,7 @@ public class ShareLaneTest {
     chromeOptions.addArguments("--disable-popup-blocking");
     driver = new ChromeDriver(chromeOptions);
     driver.manage().window().maximize();
+    driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
   }
 
 //  @Test
@@ -47,22 +49,32 @@ public class ShareLaneTest {
 
   @Test
   public void verifyRegistrationPageTest1() {
-    driver.get("https://healthunify.com/bmicalculator/");
-    driver.findElement(By.xpath("//input[@name='wg']")).sendKeys("70");
-    driver.findElement(By.xpath("//input[@name='ht']")).sendKeys("180");
-    driver.findElement(By.xpath("//input[@name='cc']")).click();
-    String text1 = driver.findElement(By.xpath("//input[@name='si']")).getAttribute("value");
-    String text2 = driver.findElement(By.xpath("//input[@name='desc']")).getAttribute("value");
-    System.out.println(text1);
-    System.out.println(text2);
-    Assert.assertEquals(text2, "Your category is Normal");
+    driver.get("https://cloud.google.com/products/calculator");
+    driver.switchTo().frame(0);
+    driver.switchTo().frame("myFrame");
+    driver.switchTo().frame("iframe");
+    driver.findElement(By.xpath("//md-select[@ng-model='listingCtrl.computeServer.os']")).sendKeys("70");
+
+
+
+
+//    driver.findElement(By.xpath("//input[@name='wg']")).sendKeys("70");
+//    driver.findElement(By.xpath("//input[@name='ht']")).sendKeys("180");
+//    driver.findElement(By.xpath("//input[@name='cc']")).click();
+//    String text1 = driver.findElement(By.xpath("//input[@name='si']")).getAttribute("value");
+//    String text2 = driver.findElement(By.xpath("//input[@name='desc']")).getAttribute("value");
+//    System.out.println(text1);
+//    System.out.println(text2);
+//    Assert.assertEquals(text2, "Your category is Normal");
   }
 
 
 
-  @AfterClass
-  public void closeBrowser() {
-    driver.quit();
-  }
+//
+//
+//  @AfterClass
+//  public void closeBrowser() {
+//    driver.quit();
+//  }
 
 }
